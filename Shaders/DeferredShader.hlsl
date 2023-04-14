@@ -41,8 +41,7 @@ struct PSOutput
 {
     float4 Diffuse : SV_Target0;
     float4 Normal : SV_Target1;
-    float4 Emissive : SV_Target2;
-    float4 WorldPos : SV_Target3;
+    float4 WorldPos : SV_Target2;
 };
 
 [earlydepthstencil]
@@ -52,8 +51,7 @@ PSOutput PSMain(PS_IN input)
     
     ret.Diffuse.rgb = DiffuseMap.Sample(Sampler, input.tex).rgb;
     ret.WorldPos = input.modelPos;
-    //ret.Diffuse.a = float3(1, 1, 1);
-    ret.Emissive = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    ret.Diffuse.a = float3(1, 1, 1);
     
     float3 normal = input.normal;
     float3 unpackedNormal = normalize(normal * 2.0f - 1.0f);

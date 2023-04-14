@@ -36,9 +36,9 @@ void KatamariDamacyGame::Initialize()
 	Game::GetInstance()->currentCamera = cameraComponent;
 	katamariController->cameraTransform = camera->transformComponent;
 
-	GameObject* removeLight = new GameObject();
+	GameObject* directionalLight = new GameObject();
 	DirectionalLightComponent* directionalLightComponent = new DirectionalLightComponent(1024, 40.0f, 40.0f, 0.1f, 200.0f);
-	removeLight->AddComponent(directionalLightComponent);
+	directionalLight->AddComponent(directionalLightComponent);
 	Game::GetInstance()->directionalLight = directionalLightComponent;
 
 	GameObject* pointLight0 = new GameObject();
@@ -66,7 +66,7 @@ void KatamariDamacyGame::Initialize()
 	Game::GetInstance()->AddGameObject(ground);      // 0
 	Game::GetInstance()->AddGameObject(camera);      // 1
 	Game::GetInstance()->AddGameObject(katamari);    // 2
-	Game::GetInstance()->AddGameObject(removeLight); // 3
+	Game::GetInstance()->AddGameObject(directionalLight); // 3
 	Game::GetInstance()->AddGameObject(pointLight0); // 4
 	Game::GetInstance()->AddGameObject(pointLight1); // 5
 

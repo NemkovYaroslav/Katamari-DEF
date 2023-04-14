@@ -8,6 +8,7 @@
 #include "CameraComponent.h"
 #include "DirectionalLightComponent.h"
 #include "PointLightComponent.h"
+#include "GBuffer.h"
 
 Game* Game::instance = nullptr;
 
@@ -42,6 +43,7 @@ void Game::PrepareResources()
 	display = std::make_shared<DisplayWin32>(name, clientWidth, clientHeight, WndProc);
 	inputDevice = std::make_shared<InputDevice>();
 	render = std::make_shared<RenderSystem>();
+	render->gBuffer = new GBuffer(); ///
 	renderShadows = std::make_shared<RenderShadows>();
 }
 

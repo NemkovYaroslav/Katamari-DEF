@@ -160,6 +160,7 @@
     <ClCompile Include="DisplayWin32.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="InputDevice.cpp" />
     <ClCompile Include="KatamariControllerComponent.cpp" />
     <ClCompile Include="KatamariDamacyGame.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Delegates.h" />
     <ClInclude Include="DisplayWin32.h" />
+    <ClInclude Include="GBuffer.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

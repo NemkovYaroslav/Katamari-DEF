@@ -20,7 +20,11 @@ public:
     virtual void Initialize() override;
     virtual void Update(float deltaTime) override;
 
-    void Draw();
+    //void Draw();
+
+    void DrawOpaque();
+
+    void DrawLighting();
 
     ModelComponent* modelComponent;
 

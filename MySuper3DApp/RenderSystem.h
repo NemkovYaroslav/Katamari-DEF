@@ -1,5 +1,4 @@
 #pragma once
-
 #include "includes.h"
 
 using namespace DirectX::SimpleMath;
@@ -7,6 +6,7 @@ using namespace DirectX::SimpleMath;
 class DisplayWin32;
 class RenderComponent;
 class RenderShadowsComponent;
+class GBuffer;
 
 class RenderSystem
 {
@@ -18,7 +18,10 @@ public:
 	void Draw();
 	void EndFrame();
 
-	void InitializeShader(std::string shaderFileName);
+	//void InitializeShader(std::string shaderFileName);
+
+	void InitializeOpaqueShader(std::string shaderFileName);
+	void InitializeLightingShader(std::string shaderFileName);
 
 	std::shared_ptr<D3D11_VIEWPORT> viewport;
 	Microsoft::WRL::ComPtr<ID3D11Device> device;
@@ -34,6 +37,25 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>     pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rastState;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>    samplerState;
+
+	ID3D11BlendState* blendStateOpaque; ///
+	ID3D11BlendState* blendStateLight;  ///
+
+	ID3D11DepthStencilState* dsOpaque;          ///
+	ID3D11DepthStencilState* dsLightingLess;    ///
+	ID3D11DepthStencilState* dsLightingGreater; ///
+
+	ID3D11RasterizerState* rastCullBack;  ///
+	ID3D11RasterizerState* rastCullFront; ///
+
+	GBuffer* gBuffer; ///
+
+	ID3D11InputLayout*  layoutOpaque;   ///
+	ID3D11InputLayout*  layoutLighting; ///
+	ID3D11VertexShader* vsOpaque;       ///
+	ID3D11VertexShader* vsLighting;     ///
+	ID3D11PixelShader*  psOpaque;       ///
+	ID3D11PixelShader*  psLighting;     ///
 
 	std::vector<RenderComponent*> renderComponents;
 };
