@@ -37,8 +37,11 @@ void KatamariDamacyGame::Initialize()
 	katamariController->cameraTransform = camera->transformComponent;
 
 	GameObject* directionalLight = new GameObject();
+	directionalLight->CreatePlane(0.001f, "../Textures/ice.png");
 	DirectionalLightComponent* directionalLightComponent = new DirectionalLightComponent(1024, 40.0f, 40.0f, 0.1f, 200.0f);
 	directionalLight->AddComponent(directionalLightComponent);
+	directionalLight->transformComponent->SetPosition(Vector3(0, 10, 0));
+	directionalLight->transformComponent->SetRotation(Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XM_PIDIV2));
 	Game::GetInstance()->directionalLight = directionalLightComponent;
 
 	GameObject* pointLight0 = new GameObject();

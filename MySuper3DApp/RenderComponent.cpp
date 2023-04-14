@@ -230,6 +230,7 @@ void RenderComponent::DrawLighting()
 	// DIRECTIONAL LIGHT
 	lightData.RemLight.dirLightColor = Game::GetInstance()->directionalLight->lightColor;
 	lightData.RemLight.dirDirection = Game::GetInstance()->directionalLight->direction;
+	/*
 	// POINT LIGHTS
 	for (int i = 0; i < Game::GetInstance()->pointLights->size(); i++)
 	{
@@ -237,6 +238,7 @@ void RenderComponent::DrawLighting()
 		lightData.PoiLight[i].poiConstLinearQuadCount = Vector4(1.0f, 0.09f, 0.032f, 2.0f);
 		lightData.PoiLight[i].poiPosition = Vector4(Game::GetInstance()->pointLights->at(i)->gameObject->transformComponent->GetPosition());
 	}
+	*/
 	D3D11_MAPPED_SUBRESOURCE secondMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[1], 0, D3D11_MAP_WRITE_DISCARD, 0, &secondMappedResource);
 	memcpy(secondMappedResource.pData, &lightData, sizeof(LightData));

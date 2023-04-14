@@ -21,17 +21,19 @@ struct DirectionalLightData
     float3 lightColor;
     float3 direction;
 };
+/*
 struct PointLightData
 {
     float3 lightColor;
     float4 valueConLinQuadCount;
     float3 position;
 };
+*/
 cbuffer LightConstantBuffer : register(b1)
 {
     MaterialData material;
     DirectionalLightData dirLight;
-    PointLightData poiLight[2];
+    //PointLightData poiLight[2];
 };
 struct ShadowData
 {
@@ -65,10 +67,9 @@ PS_IN VSMain(uint id : SV_VertexID)
 
 Texture2D DiffuseMap  : register(t0);
 Texture2D NormalMap   : register(t1); ///
-Texture2D EmissiveMap : register(t2); ///
-Texture2D WorldPosMap : register(t3); ///
+Texture2D WorldPosMap : register(t2); ///
 
-Texture2DArray ShadowMap : register(t4);
+Texture2DArray ShadowMap : register(t3);
 SamplerComparisonState ShadowMapSampler : register(s0);
 
 struct GBufferData
