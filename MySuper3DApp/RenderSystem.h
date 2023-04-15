@@ -52,10 +52,13 @@ public:
 
 	ID3D11InputLayout*  layoutOpaque;   ///
 	ID3D11InputLayout*  layoutLighting; ///
+	ID3D11InputLayout*  layoutLightingPoi; ///
 	ID3D11VertexShader* vsOpaque;       ///
 	ID3D11VertexShader* vsLighting;     ///
+	ID3D11VertexShader* vsLightingPoi;     ///
 	ID3D11PixelShader*  psOpaque;       ///
 	ID3D11PixelShader*  psLighting;     ///
+	ID3D11PixelShader*  psLightingPoi;     ///
 
 	std::vector<RenderComponent*> renderComponents;
 };

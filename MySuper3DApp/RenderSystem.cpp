@@ -365,10 +365,18 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 		}
 		return;
 	}
+	// DIRECTIONAL
 	result = device->CreateVertexShader(
 		vertexShaderByteCode->GetBufferPointer(),
 		vertexShaderByteCode->GetBufferSize(),
 		nullptr, &vsLighting
+	);
+	assert(SUCCEEDED(result));
+	// POINT
+	result = device->CreateVertexShader(
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
+		nullptr, &vsLightingPoi
 	);
 	assert(SUCCEEDED(result));
 
@@ -385,10 +393,18 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 		&errorCode
 	);
 	assert(SUCCEEDED(result));
+	// DIRECTIONAL
 	result = device->CreatePixelShader(
 		pixelShaderByteCode->GetBufferPointer(),
 		pixelShaderByteCode->GetBufferSize(),
 		nullptr, &psLighting
+	);
+	assert(SUCCEEDED(result));
+	// POINT
+	result = device->CreatePixelShader(
+		pixelShaderByteCode->GetBufferPointer(),
+		pixelShaderByteCode->GetBufferSize(),
+		nullptr, &psLightingPoi
 	);
 	assert(SUCCEEDED(result));
 
@@ -403,12 +419,22 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 			0
 		}
 	};
+	// DIRECTIONAL
 	result = device->CreateInputLayout(
 		inputElements,
 		1,
 		vertexShaderByteCode->GetBufferPointer(),
 		vertexShaderByteCode->GetBufferSize(),
 		&layoutLighting
+	);
+	assert(SUCCEEDED(result));
+	// POINT
+	result = device->CreateInputLayout(
+		inputElements,
+		1,
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
+		&layoutLightingPoi
 	);
 	assert(SUCCEEDED(result));
 }

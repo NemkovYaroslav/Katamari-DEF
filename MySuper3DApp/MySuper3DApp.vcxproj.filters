@@ -198,5 +198,8 @@
     <FxCompile Include="..\Shaders\DeferredShader.hlsl">
       <Filter>Resource Files\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\Shaders\DeferredLightingPoi.hlsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

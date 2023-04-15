@@ -21,19 +21,11 @@ struct DirectionalLightData
     float3 lightColor;
     float3 direction;
 };
-/*
-struct PointLightData
-{
-    float3 lightColor;
-    float4 valueConLinQuadCount;
-    float3 position;
-};
-*/
+
 cbuffer LightConstantBuffer : register(b1)
 {
     MaterialData material;
     DirectionalLightData dirLight;
-    //PointLightData poiLight[2];
 };
 struct ShadowData
 {

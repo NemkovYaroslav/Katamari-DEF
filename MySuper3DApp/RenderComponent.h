@@ -25,6 +25,7 @@ public:
     void DrawOpaque();
 
     void DrawLighting();
+    void DrawLightingPoi();
 
     ModelComponent* modelComponent;
 
