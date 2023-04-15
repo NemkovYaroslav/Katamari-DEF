@@ -24,17 +24,8 @@ struct PointLightData
 };
 cbuffer LightConstantBuffer : register(b1)
 {
-    MaterialData material;
-    PointLightData poiLight[2];
-};
-struct ShadowData
-{
-    row_major matrix viewProj[4];
-    float4 distances;
-};
-cbuffer LightCameraConstantBuffer : register(b2)
-{
-    ShadowData shadow;
+    MaterialData   material;
+    PointLightData poiLight;
 };
 
 struct VS_IN
@@ -53,7 +44,7 @@ PS_IN VSMain(VS_IN input)
     PS_IN output = (PS_IN) 0; 
     output.pos = mul(mul(mul(float4(input.pos.xyz, 1.0f), curCamera.model), curCamera.view), curCamera.projection);
     
-    float4 modelPos = mul(float4(input.pos.xyz, 1.0f), curCamera.model);
+    float4 modelPos = mul(float4(input.pos.xyz, 1.0f), curCamera.model);  
     output.modelPos = modelPos;
     
     return output;
@@ -81,51 +72,25 @@ GBufferData ReadGBuffer(float2 screenPos)
     return buf;
 }
 
-float3 CalcDirLight(float3 normal, float3 viewDir, GBufferData gBuffer, float4 posViewProj, float layer);
+float3 CalcDirLight(float4 modelPos, GBufferData gBuffer);
 
 float4 PSMain(PS_IN input) : SV_Target
 {
-    GBufferData gBuffer = ReadGBuffer(input.pos.xy);
-    
-    float3 normal = normalize(gBuffer.Normal);
-    float3 viewDir = normalize(curCamera.position - gBuffer.WorldPos.xyz);
-    
-    float4 cameraViewPosition = mul(float4(gBuffer.WorldPos.xyz, 1.0f), curCamera.view);
-    
-    float layer = 3.0f;
-    float depthVal = abs(cameraViewPosition.z);
-    for (int i = 0; i < 4; ++i)
-    {
-        if (depthVal < shadow.distances[i])
-        {
-            layer = (float) i;
-            break;
-        }
-    }
-    
-    float4 dirLightViewProj = mul(float4(gBuffer.WorldPos.xyz, 1.0f), shadow.viewProj[layer]);
-    
-    float3 result = CalcDirLight(normal, viewDir, gBuffer, dirLightViewProj, layer);
-
+    GBufferData gBuffer = ReadGBuffer(input.pos.xy);  
+    float3 result = CalcDirLight(input.modelPos, gBuffer);
     return float4(result, 1.0f);
 }
 
-float IsLighted(float3 lightDir, float3 normal, float4 dirLightViewProj, float layer);
-
-float3 CalcDirLight(float3 normal, float3 viewDir, GBufferData gBuffer, float4 posViewProj, float layer)
+float3 CalcDirLight(float4 modelPos, GBufferData gBuffer)
 {
-    float3 diffValue = gBuffer.DiffuseSpec;   
+    float3 diffValue = gBuffer.DiffuseSpec;
+    
     //POINT LIGHT
-    float3 ambient  = material.ambient  * diffValue;
-    float3 diffuse  = material.diffuse  * diffValue;
-    float3 specular = material.specular * diffValue;  
-    for (int i = 0; i < poiLight[i].valueConLinQuadCount.w; i++)
-    {
-        float distance = length(poiLight[i].position - gBuffer.WorldPos.xyz);
-        float attenuation = 1.0f / (poiLight[i].valueConLinQuadCount.x + poiLight[i].valueConLinQuadCount.y * distance + poiLight[i].valueConLinQuadCount.z * (distance * distance));
-        ambient  += ambient  * attenuation * poiLight[i].lightColor;
-        diffuse  += diffuse  * attenuation * poiLight[i].lightColor;
-        specular += specular * attenuation * poiLight[i].lightColor;
-    } 
-    return (ambient + diffuse + specular);
+    float distance     = length(poiLight.position - modelPos.xyz);
+    float  attenuation = 1.0f / (poiLight.valueConLinQuadCount.x + poiLight.valueConLinQuadCount.y * distance + poiLight.valueConLinQuadCount.z * (distance * distance));
+
+    float3 diffuse  = material.diffuse  * diffValue * attenuation * poiLight.lightColor;
+    float3 specular = material.specular * diffValue * attenuation * poiLight.lightColor;
+    
+    return (diffuse + specular);
 }
