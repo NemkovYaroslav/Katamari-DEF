@@ -6,6 +6,7 @@ class RenderComponent;
 class ModelComponent;
 class RenderShadowsComponent;
 class Component;
+class PointLightComponent;
 
 using namespace DirectX::SimpleMath;
 
@@ -30,5 +31,5 @@ public:
 	void AddComponent(Component* component);
 
 	void CreatePlane(float planeSize, std::string textureFileName);
-	void CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName);
+	void CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName, PointLightComponent* poiPointLightComponent = nullptr);
 };

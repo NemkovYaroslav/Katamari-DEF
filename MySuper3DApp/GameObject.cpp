@@ -9,6 +9,8 @@
 #include "CameraComponent.h"
 #include "CameraControllerComponent.h"
 
+#include "PointLightComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 {
 	this->transformComponent = new TransformComponent();
@@ -61,7 +63,7 @@ void GameObject::CreatePlane(float planeSize, std::string textureFileName)
 	AddComponent(renderComponent);
 }
 
-void GameObject::CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName)
+void GameObject::CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName, PointLightComponent* poiPointLightComponent)
 {
 	modelComponent = new ModelComponent(textureFileName);
 	modelComponent->AddMesh(scaleRate, objectFileName);

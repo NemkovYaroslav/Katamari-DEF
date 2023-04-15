@@ -484,7 +484,7 @@ void RenderSystem::Draw()
 
 	Game::GetInstance()->directionalLight->gameObject->renderComponent->DrawLighting();
 
-	Game::GetInstance()->pointLights->at(0)->gameObject->renderComponent->DrawLightingPoi(0);
+	//Game::GetInstance()->pointLights->at(0)->gameObject->renderComponent->DrawLightingPoi(0);
 
 	/*
 	for (int i = 0; i < Game::GetInstance()->pointLights->size(); i++)
