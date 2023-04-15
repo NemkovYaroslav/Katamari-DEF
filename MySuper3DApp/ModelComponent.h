@@ -8,6 +8,8 @@
 
 using namespace DirectX::SimpleMath;
 
+class PointLightComponent;
+
 class ModelComponent : public Component
 {
 public:

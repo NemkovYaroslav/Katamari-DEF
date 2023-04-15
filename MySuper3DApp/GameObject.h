@@ -31,5 +31,5 @@ public:
 	void AddComponent(Component* component);
 
 	void CreatePlane(float planeSize, std::string textureFileName);
-	void CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName, PointLightComponent* poiPointLightComponent = nullptr);
+	void CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName);
 };

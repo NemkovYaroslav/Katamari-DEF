@@ -4,6 +4,8 @@
 #include "RenderSystem.h"
 #include <WICTextureLoader.h>
 
+#include "PointLightComponent.h"
+
 ModelComponent::ModelComponent(std::string textureFileName)
 {
 	this->textureFileName = textureFileName;

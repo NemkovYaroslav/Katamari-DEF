@@ -89,8 +89,8 @@ float3 CalcDirLight(float4 modelPos, GBufferData gBuffer)
     float distance     = length(poiLight.position - modelPos.xyz);
     float  attenuation = 1.0f / (poiLight.valueConLinQuadCount.x + poiLight.valueConLinQuadCount.y * distance + poiLight.valueConLinQuadCount.z * (distance * distance));
 
-    float3 diffuse  = material.diffuse  * diffValue * attenuation * poiLight.lightColor;
-    float3 specular = material.specular * diffValue * attenuation * poiLight.lightColor;
+    float3 diffuse  = diffValue;
+    float3 specular = diffValue;
     
     return (diffuse + specular);
 }

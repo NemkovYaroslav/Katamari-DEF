@@ -300,8 +300,8 @@ void RenderComponent::DrawLightingPoi(int poiIndex)
 
 	LightData lightData{};
 	// MATERIAL
-	lightData.MatData.matAmbient = modelComponent->material.ambient;
-	lightData.MatData.matDiffuse = modelComponent->material.diffuse;
+	lightData.MatData.matAmbient  = modelComponent->material.ambient;
+	lightData.MatData.matDiffuse  = modelComponent->material.diffuse;
 	lightData.MatData.matSpecular = modelComponent->material.specular;
 	// POINT LIGHT
 	lightData.PoiLight.poiLightColor           = Game::GetInstance()->pointLights->at(poiIndex)->lightColor;
@@ -329,10 +329,10 @@ void RenderComponent::DrawLightingPoi(int poiIndex)
 
 	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingLess, 0);
 
-	UINT strides[] { 48 };
-	UINT offsets[] { 0  };
+	UINT strides[]{ 48 };
+	UINT offsets[]{ 0 };
 	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, modelComponent->vertexBuffer.GetAddressOf(), strides, offsets);
-	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(Game::GetInstance()->GetRenderSystem()->layoutLightingPoi);
+	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(Game::GetInstance()->GetRenderSystem()->layoutLightingPoi); ///
 	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(modelComponent->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(Game::GetInstance()->GetRenderSystem()->vsLightingPoi, nullptr, 0);

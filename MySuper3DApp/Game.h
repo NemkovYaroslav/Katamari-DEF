@@ -34,10 +34,10 @@ public:
 	std::shared_ptr<RenderSystem>  render;
 	std::shared_ptr<RenderShadows> renderShadows;
 
-	CameraComponent* currentCamera;
+	CameraComponent*                  currentCamera;
 	DirectionalLightComponent*        directionalLight;
 	std::vector<PointLightComponent*> pointLights[2];
-	std::vector<GameObject*> gameObjects;
+	std::vector<GameObject*>          gameObjects;
 
 	void Run();
 	virtual void PrepareResources();

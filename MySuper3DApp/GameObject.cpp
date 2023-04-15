@@ -63,16 +63,15 @@ void GameObject::CreatePlane(float planeSize, std::string textureFileName)
 	AddComponent(renderComponent);
 }
 
-void GameObject::CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName, PointLightComponent* poiPointLightComponent)
+void GameObject::CreateMesh(float scaleRate, std::string textureFileName, std::string objectFileName)
 {
 	modelComponent = new ModelComponent(textureFileName);
 	modelComponent->AddMesh(scaleRate, objectFileName);
+
 	AddComponent(modelComponent);
-	
 	//SHADOWS
 	renderShadowsComponent = new RenderShadowsComponent(modelComponent);
 	AddComponent(renderShadowsComponent);
-
 	//MAIN FRAME
 	renderComponent = new RenderComponent(modelComponent);
 	AddComponent(renderComponent);
