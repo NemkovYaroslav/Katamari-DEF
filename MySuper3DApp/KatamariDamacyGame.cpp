@@ -37,25 +37,25 @@ void KatamariDamacyGame::Initialize()
 	katamariController->cameraTransform = camera->transformComponent;
 
 	GameObject* directionalLight = new GameObject();
-	directionalLight->CreatePlane(0.001f, "../Textures/ice.png");
 	DirectionalLightComponent* directionalLightComponent = new DirectionalLightComponent(1024, 40.0f, 40.0f, 0.1f, 200.0f);
+	directionalLightComponent->direction = Vector4(Vector3(0.0f, -1.0f, 0.3f));
 	directionalLight->AddComponent(directionalLightComponent);
-	directionalLight->transformComponent->SetPosition(Vector3(0, 10, 0));
-	directionalLight->transformComponent->SetRotation(Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XM_PIDIV2));
 	Game::GetInstance()->directionalLight = directionalLightComponent;
 
 	GameObject* pointLight0 = new GameObject();
-	PointLightComponent* pointLightComponent0 = new PointLightComponent(1.0f, 0.09f, 0.032f);
-	pointLightComponent0->lightColor = { 1.0f, 0.0f, 0.0f };
-	pointLight0->AddComponent(pointLightComponent0);
 	pointLight0->CreateMesh(0.2f, "../Textures/LampAlbedo.png", "../Models/lamp.obj");
-	pointLight0->CreateMesh(3.0f, "../Textures/ice.png", "../Models/LightSphere.fbx");
 	pointLight0->transformComponent->SetPosition(Vector3(15, 1, 15));
 	pointLight0->modelComponent->material.ambient  = { 1.0f, 1.0f, 1.0f };
 	pointLight0->modelComponent->material.diffuse  = { 1.0f, 1.0f, 1.0f };
 	pointLight0->modelComponent->material.specular = { 1.0f, 1.0f, 1.0f };
+	PointLightComponent* pointLightComponent0 = new PointLightComponent(1.0f, 0.09f, 0.032f);
+	pointLightComponent0->lightColor = { 1.0f, 0.0f, 0.0f };
+	pointLightComponent0->PoiAddMesh(3.0f, "../Models/LightSphere.fbx");
+	GameObject* pointLightSphere0 = new GameObject();
+	pointLightSphere0->AddComponent(pointLightComponent0);
 	Game::GetInstance()->pointLights->push_back(pointLightComponent0);
 
+	/*
 	GameObject* pointLight1 = new GameObject();
 	pointLight1->CreateMesh(0.2f, "../Textures/LampAlbedo.png", "../Models/lamp.obj");
 	pointLight1->transformComponent->SetPosition(Vector3(-15, 1, 15));
@@ -66,13 +66,15 @@ void KatamariDamacyGame::Initialize()
 	pointLight1->modelComponent->material.diffuse  = { 1.0f, 1.0f, 1.0f };
 	pointLight1->modelComponent->material.specular = { 1.0f, 1.0f, 1.0f };
 	Game::GetInstance()->pointLights->push_back(pointLightComponent1);
+	*/
 
 	Game::GetInstance()->AddGameObject(ground);      // 0
 	Game::GetInstance()->AddGameObject(camera);      // 1
 	Game::GetInstance()->AddGameObject(katamari);    // 2
 	Game::GetInstance()->AddGameObject(directionalLight); // 3
 	Game::GetInstance()->AddGameObject(pointLight0); // 4
-	Game::GetInstance()->AddGameObject(pointLight1); // 5
+	Game::GetInstance()->AddGameObject(pointLightSphere0); //5
+	//Game::GetInstance()->AddGameObject(pointLight1); // 6
 
 	GameObject* statue = new GameObject();
 	statue->CreateMesh(0.02f, "../Textures/bull.jpg", "../Models/bull.obj");

@@ -19,7 +19,7 @@ public:
 	RenderComponent* renderComponent;
 	ModelComponent* modelComponent;
 	RenderShadowsComponent* renderShadowsComponent;
-	
+
 	std::vector<Component*> components;
 
 	GameObject(GameObject* parent = nullptr);

@@ -1,8 +1,6 @@
 struct CurrentCameraData
 {
     row_major matrix view;
-    row_major matrix projection;
-    row_major matrix model;
     float3           position;
 };
 cbuffer CameraConstantBuffer : register(b0)
@@ -10,23 +8,17 @@ cbuffer CameraConstantBuffer : register(b0)
     CurrentCameraData curCamera;
 };
 
-struct MaterialData
-{
-    float3 ambient;
-    float3 diffuse;
-    float3 specular;
-};
+
 struct DirectionalLightData
 {
     float3 lightColor;
     float3 direction;
 };
-
 cbuffer LightConstantBuffer : register(b1)
 {
-    MaterialData material;
     DirectionalLightData dirLight;
 };
+
 struct ShadowData
 {
     row_major matrix viewProj[4];
@@ -87,7 +79,7 @@ float3 CalcDirLight(DirectionalLightData dirLight, float3 normal, float3 viewDir
 float4 PSMain(PS_IN input) : SV_Target
 {
     GBufferData gBuffer = ReadGBuffer(input.pos.xy);
-    
+
     float3 normal = normalize(gBuffer.Normal);
     float3 viewDir = normalize(curCamera.position - gBuffer.WorldPos.xyz);
     
@@ -107,8 +99,10 @@ float4 PSMain(PS_IN input) : SV_Target
     float4 dirLightViewProj = mul(float4(gBuffer.WorldPos.xyz, 1.0f), shadow.viewProj[layer]);
     
     float3 result = CalcDirLight(dirLight, normal, viewDir, gBuffer, dirLightViewProj, layer);
-
-    return float4(result, 1.0f);
+    
+    float3 diffValue = gBuffer.DiffuseSpec;
+    
+    return float4(diffValue, 1.0f);
 }
 
 float IsLighted(float3 lightDir, float3 normal, float4 dirLightViewProj, float layer);
@@ -123,9 +117,9 @@ float3 CalcDirLight(DirectionalLightData dirLight, float3 normal, float3 viewDir
     float3 reflectDir = reflect(-lightDir, normal);
     float  spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
     
-    float3 ambient  = material.ambient         * diffValue;
-    float3 diffuse  = material.diffuse  * diff * diffValue;
-    float3 specular = material.specular * spec * diffValue;
+    float3 ambient  = float3(0.5f, 0.5f, 0.5f)        * diffValue;
+    float3 diffuse  = float3(0.5f, 0.5f, 0.5f) * diff * diffValue;
+    float3 specular = float3(0.5f, 0.5f, 0.5f) * spec * diffValue;
     
     float1 isLighted = 1;
     

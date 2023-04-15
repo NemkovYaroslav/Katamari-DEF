@@ -15,6 +15,10 @@ public:
 	
 	virtual void Initialize() override;
 
+	void Draw();
+
+	ID3D11Buffer** constBuffer;
+
 	Vector4 lightColor = { Vector3(0.5f, 0.5f, 0.5f) };
 
 	Vector4 direction { Vector3(0.0f, -1.0f, 0.1f) };

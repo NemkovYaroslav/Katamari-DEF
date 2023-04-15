@@ -24,9 +24,6 @@ public:
 
     void DrawOpaque();
 
-    void DrawLighting();
-    void DrawLightingPoi(int poiIndex);
-
     ModelComponent* modelComponent;
 
     ID3D11Buffer** constBuffer;

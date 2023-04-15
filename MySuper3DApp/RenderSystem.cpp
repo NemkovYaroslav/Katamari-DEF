@@ -482,16 +482,9 @@ void RenderSystem::Draw()
 	context->ClearRenderTargetView(renderView.Get(), backgroundColor);
 	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	Game::GetInstance()->directionalLight->gameObject->renderComponent->DrawLighting();
+	Game::GetInstance()->directionalLight->Draw();
 
-	//Game::GetInstance()->pointLights->at(0)->gameObject->renderComponent->DrawLightingPoi(0);
-
-	/*
-	for (int i = 0; i < Game::GetInstance()->pointLights->size(); i++)
-	{
-		Game::GetInstance()->pointLights->at(i)->gameObject->renderComponent->DrawLightingPoi();
-	}
-	*/
+	Game::GetInstance()->pointLights->at(0)->Draw();
 }
 
 void RenderSystem::EndFrame()
