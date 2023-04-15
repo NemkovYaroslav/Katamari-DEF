@@ -100,9 +100,7 @@ float4 PSMain(PS_IN input) : SV_Target
     
     float3 result = CalcDirLight(dirLight, normal, viewDir, gBuffer, dirLightViewProj, layer);
     
-    float3 diffValue = gBuffer.DiffuseSpec;
-    
-    return float4(diffValue, 1.0f);
+    return float4(result, 1.0f);
 }
 
 float IsLighted(float3 lightDir, float3 normal, float4 dirLightViewProj, float layer);

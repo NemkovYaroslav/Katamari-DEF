@@ -115,6 +115,7 @@ RenderSystem::RenderSystem()
 
 	InitializeOpaqueShader("../Shaders/DeferredShader.hlsl");
 	InitializeLightingShader("../Shaders/DeferredLighting.hlsl");
+	InitializeLightingShaderPoi("../Shaders/DeferredLightingPoi.hlsl");
 
 	//RASTERIZERS
 	CD3D11_RASTERIZER_DESC rastCullBackDesc = {}; ///
@@ -373,13 +374,6 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 		nullptr, &vsLighting
 	);
 	assert(SUCCEEDED(result));
-	// POINT
-	result = device->CreateVertexShader(
-		vertexShaderByteCode->GetBufferPointer(),
-		vertexShaderByteCode->GetBufferSize(),
-		nullptr, &vsLightingPoi
-	);
-	assert(SUCCEEDED(result));
 
 	Microsoft::WRL::ComPtr<ID3DBlob> pixelShaderByteCode;
 	result = D3DCompileFromFile(
@@ -399,13 +393,6 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 		pixelShaderByteCode->GetBufferPointer(),
 		pixelShaderByteCode->GetBufferSize(),
 		nullptr, &psLighting
-	);
-	assert(SUCCEEDED(result));
-	// POINT
-	result = device->CreatePixelShader(
-		pixelShaderByteCode->GetBufferPointer(),
-		pixelShaderByteCode->GetBufferSize(),
-		nullptr, &psLightingPoi
 	);
 	assert(SUCCEEDED(result));
 
@@ -429,6 +416,77 @@ void RenderSystem::InitializeLightingShader(std::string shaderFileName)
 		&layoutLighting
 	);
 	assert(SUCCEEDED(result));
+}
+
+void RenderSystem::InitializeLightingShaderPoi(std::string shaderFileName)
+{
+	std::wstring fileName(shaderFileName.begin(), shaderFileName.end());
+	ID3DBlob* errorCode = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> vertexShaderByteCode;
+	auto result = D3DCompileFromFile(
+		fileName.c_str(),
+		nullptr,
+		nullptr,
+		"VSMain",
+		"vs_5_0",
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
+		0,
+		vertexShaderByteCode.GetAddressOf(),
+		&errorCode
+	);
+	if (FAILED(result))
+	{
+		if (errorCode)
+		{
+			const char* compileErrors = (char*)(errorCode->GetBufferPointer());
+			std::cout << compileErrors << std::endl;
+		}
+		else
+		{
+			std::cout << "Missing Shader File: " << shaderFileName << std::endl;
+		}
+		return;
+	}
+	// POINT
+	result = device->CreateVertexShader(
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
+		nullptr, &vsLightingPoi
+	);
+	assert(SUCCEEDED(result));
+
+	Microsoft::WRL::ComPtr<ID3DBlob> pixelShaderByteCode;
+	result = D3DCompileFromFile(
+		fileName.c_str(),
+		nullptr,
+		nullptr,
+		"PSMain",
+		"ps_5_0",
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
+		0,
+		pixelShaderByteCode.GetAddressOf(),
+		&errorCode
+	);
+	assert(SUCCEEDED(result));
+	// POINT
+	result = device->CreatePixelShader(
+		pixelShaderByteCode->GetBufferPointer(),
+		pixelShaderByteCode->GetBufferSize(),
+		nullptr, &psLightingPoi
+	);
+	assert(SUCCEEDED(result));
+
+	D3D11_INPUT_ELEMENT_DESC inputElements[] = {
+		D3D11_INPUT_ELEMENT_DESC {
+			"POSITION",
+			0,
+			DXGI_FORMAT_R32G32B32A32_FLOAT,
+			0,
+			0,
+			D3D11_INPUT_PER_VERTEX_DATA,
+			0
+		}
+	};
 	// POINT
 	result = device->CreateInputLayout(
 		inputElements,

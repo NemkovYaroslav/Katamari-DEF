@@ -22,6 +22,7 @@ public:
 
 	void InitializeOpaqueShader(std::string shaderFileName);
 	void InitializeLightingShader(std::string shaderFileName);
+	void InitializeLightingShaderPoi(std::string shaderFileName);
 
 	std::shared_ptr<D3D11_VIEWPORT> viewport;
 	Microsoft::WRL::ComPtr<ID3D11Device> device;
