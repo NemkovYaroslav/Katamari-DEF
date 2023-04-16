@@ -102,10 +102,10 @@ void PointLightComponent::Draw()
 
 	LightData lightData
 	{
-		Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetModel(),
-		Game::GetInstance()->pointLights->at(0)->lightColor,
+		gameObject->transformComponent->GetModel(),
+		lightColor,
 		Vector4(1.0f, 0.09f, 0.032f, 1.0f),
-		Vector4(Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetPosition()),
+		Vector4(gameObject->transformComponent->GetPosition()),
 	};
 	D3D11_MAPPED_SUBRESOURCE secondMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[1], 0, D3D11_MAP_WRITE_DISCARD, 0, &secondMappedResource);

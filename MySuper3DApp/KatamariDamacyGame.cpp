@@ -56,18 +56,19 @@ void KatamariDamacyGame::Initialize()
 	pointLightSphere0->AddComponent(pointLightComponent0);
 	Game::GetInstance()->pointLights->push_back(pointLightComponent0);
 
-	/*
 	GameObject* pointLight1 = new GameObject();
 	pointLight1->CreateMesh(0.2f, "../Textures/LampAlbedo.png", "../Models/lamp.obj");
 	pointLight1->transformComponent->SetPosition(Vector3(-15, 1, 15));
-	PointLightComponent* pointLightComponent1 = new PointLightComponent(1.0f, 0.09f, 0.032f);
-	pointLightComponent1->lightColor = { 1.0f, 1.0f, 0.0f };
-	pointLight1->AddComponent(pointLightComponent1);
-	pointLight1->modelComponent->material.ambient  = { 1.0f, 1.0f, 1.0f };
-	pointLight1->modelComponent->material.diffuse  = { 1.0f, 1.0f, 1.0f };
+	pointLight1->modelComponent->material.ambient = { 1.0f, 1.0f, 1.0f };
+	pointLight1->modelComponent->material.diffuse = { 1.0f, 1.0f, 1.0f };
 	pointLight1->modelComponent->material.specular = { 1.0f, 1.0f, 1.0f };
+	PointLightComponent* pointLightComponent1 = new PointLightComponent(1.0f, 0.09f, 0.032f);
+	pointLightComponent1->lightColor = { 0.0f, 1.0f, 0.0f };
+	pointLightComponent1->PoiAddMesh(3.0f, "../Models/lightSphere.fbx");
+	GameObject* pointLightSphere1 = new GameObject();
+	pointLightSphere1->transformComponent->SetPosition(Vector3(-15, 1, 15));
+	pointLightSphere1->AddComponent(pointLightComponent1);
 	Game::GetInstance()->pointLights->push_back(pointLightComponent1);
-	*/
 
 	Game::GetInstance()->AddGameObject(ground);      // 0
 	Game::GetInstance()->AddGameObject(camera);      // 1
@@ -75,7 +76,8 @@ void KatamariDamacyGame::Initialize()
 	Game::GetInstance()->AddGameObject(directionalLight); // 3
 	Game::GetInstance()->AddGameObject(pointLight0); // 4
 	Game::GetInstance()->AddGameObject(pointLightSphere0); //5
-	//Game::GetInstance()->AddGameObject(pointLight1); // 6
+	Game::GetInstance()->AddGameObject(pointLight1); // 6
+	Game::GetInstance()->AddGameObject(pointLightSphere1); //7
 
 	GameObject* statue = new GameObject();
 	statue->CreateMesh(0.02f, "../Textures/bull.jpg", "../Models/bull.obj");

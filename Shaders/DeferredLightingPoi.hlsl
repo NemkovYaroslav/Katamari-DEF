@@ -80,19 +80,11 @@ float4 PSMain(PS_IN input) : SV_Target
         clip(gBuffer.WorldPos);
     }
     float  attenuation = 1.0f / (poiLight.constLinearQuadCount.x + poiLight.constLinearQuadCount.y * distance + poiLight.constLinearQuadCount.z * (distance * distance));
-    float3 diffuse     = attenuation * float3(1.0f, 0.0f, 0.0f) * diffValue * diff;
-    float3 specular    = attenuation * float3(1.0f, 0.0f, 0.0f) * diffValue * spec;
+    float3 diffuse     = attenuation * poiLight.lightColor * diffValue * diff;
+    float3 specular    = attenuation * poiLight.lightColor * diffValue * spec;
     
     return float4(float3(diffuse + specular), 0.0f);
     */
 
-    /*
-    float distance = length(poiLight.position.xyz - gBuffer.WorldPos);
-    if (distance > 3.0f)
-    {
-        clip(gBuffer.WorldPos);
-    }
-    */
-    
-    return float4(float3(1.0f, 0.0f, 0.0f), 0.0f);
+    return float4(poiLight.lightColor, 0.0f);
 }

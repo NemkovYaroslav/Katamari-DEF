@@ -544,6 +544,8 @@ void RenderSystem::Draw()
 	Game::GetInstance()->directionalLight->Draw();
 
 	Game::GetInstance()->pointLights->at(0)->Draw();
+
+	Game::GetInstance()->pointLights->at(1)->Draw();
 }
 
 void RenderSystem::EndFrame()
