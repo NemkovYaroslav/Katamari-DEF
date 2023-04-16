@@ -29,6 +29,8 @@ public:
 	float linear    = 0.09f;
 	float quadratic = 0.032f;
 
+	float sphereRadius;
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer> poiVertexBuffer;
 	std::vector<Vector4> poiPoints;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> poiIndexBuffer;

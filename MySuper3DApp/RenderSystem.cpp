@@ -91,20 +91,20 @@ RenderSystem::RenderSystem()
 	result = device->CreateDepthStencilState(&dsDesc, &dsOpaque);
 
 	D3D11_DEPTH_STENCIL_DESC dsDescLess = {};    ///
-	dsDescLess.DepthEnable = TRUE;
+	dsDescLess.DepthEnable    = TRUE;
 	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	dsDescLess.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dsDescLess.DepthFunc      = D3D11_COMPARISON_LESS_EQUAL;
 	result = device->CreateDepthStencilState(&dsDescLess, &dsLightingLess);
 
 	D3D11_DEPTH_STENCIL_DESC dsDescGreater = {}; ///
-	dsDescLess.DepthEnable = TRUE;
+	dsDescLess.DepthEnable    = TRUE;
 	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	dsDescLess.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	dsDescLess.DepthFunc      = D3D11_COMPARISON_GREATER_EQUAL;
 	result = device->CreateDepthStencilState(&dsDescLess, &dsLightingGreater);
 
 	D3D11_DEPTH_STENCIL_DESC dsDirLightDesc = {};
-	dsDescLess.DepthEnable = FALSE;
-	dsDescLess.StencilEnable = FALSE;
+	dsDescLess.DepthEnable    = FALSE;
+	dsDescLess.StencilEnable  = FALSE;
 	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	result = device->CreateDepthStencilState(&dsDirLightDesc, &dsDirLight);
 

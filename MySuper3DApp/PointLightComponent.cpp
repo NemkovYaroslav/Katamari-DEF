@@ -10,7 +10,7 @@ struct alignas(16) CameraData
 {
 	Matrix  camView;
 	Matrix  camProjection;
-	Vector3 camPosition;
+	Vector4 camPosition;
 };
 
 struct PointLightData
@@ -93,7 +93,7 @@ void PointLightComponent::Draw()
 	{
 		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetView(),
 		Game::GetInstance()->currentCamera->GetProjection(),
-		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition(),
+		Vector4(Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition()),
 	};
 	D3D11_MAPPED_SUBRESOURCE firstMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[0], 0, D3D11_MAP_WRITE_DISCARD, 0, &firstMappedResource);
@@ -105,7 +105,7 @@ void PointLightComponent::Draw()
 		Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetModel(),
 		Game::GetInstance()->pointLights->at(0)->lightColor,
 		Vector4(1.0f, 0.09f, 0.032f, 1.0f),
-		Vector4(Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetPosition())
+		Vector4(Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetPosition()),
 	};
 	D3D11_MAPPED_SUBRESOURCE secondMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[1], 0, D3D11_MAP_WRITE_DISCARD, 0, &secondMappedResource);
@@ -142,32 +142,34 @@ void PointLightComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->DrawIndexed(poiIndices.size(), 0, 0); //-//
 }
 
-void PointLightComponent::PoiAddMesh(float scaleRate, std::string objectFileName)
+void PointLightComponent::PoiAddMesh(float sphereRadius, std::string objectFileName)
 {
+	this->sphereRadius = sphereRadius;
+
 	Assimp::Importer importer;
 	const aiScene* pScene = importer.ReadFile(objectFileName, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
 	if (!pScene) { return; }
 
-	ProcessNode(pScene->mRootNode, pScene, scaleRate);
+	ProcessNode(pScene->mRootNode, pScene, sphereRadius);
 }
-void PointLightComponent::ProcessNode(aiNode* node, const aiScene* scene, float scaleRate)
+void PointLightComponent::ProcessNode(aiNode* node, const aiScene* scene, float sphereRadius)
 {
 	for (UINT i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		ProcessMesh(mesh, scene, scaleRate);
+		ProcessMesh(mesh, scene, sphereRadius);
 	}
 
 	for (UINT i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene, scaleRate);
+		ProcessNode(node->mChildren[i], scene, sphereRadius);
 	}
 }
-void PointLightComponent::ProcessMesh(aiMesh* mesh, const aiScene* scene, float scaleRate)
+void PointLightComponent::ProcessMesh(aiMesh* mesh, const aiScene* scene, float sphereRadius)
 {
 	for (UINT i = 0; i < mesh->mNumVertices; i++) {
-		poiPoints.push_back({ mesh->mVertices[i].x * scaleRate, mesh->mVertices[i].y * scaleRate, mesh->mVertices[i].z * scaleRate, 1.0f });	
+		poiPoints.push_back({ mesh->mVertices[i].x * sphereRadius, mesh->mVertices[i].y * sphereRadius, mesh->mVertices[i].z * sphereRadius, 1.0f });
 	}
 
 	for (UINT i = 0; i < mesh->mNumFaces; i++) {		
