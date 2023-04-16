@@ -10,9 +10,19 @@ struct alignas(16) CameraData
 {
 	Matrix  camView;
 	Matrix  camProjection;
-	Matrix  objModel;
 	Vector3 camPosition;
-	Vector3 objPosition;
+};
+
+struct PointLightData
+{
+	Matrix  poiModel;
+	Vector4 poiLightColor;
+	Vector4 poiConstLinearQuadCount;
+	Vector4 poiPosition;
+};
+struct alignas(16) LightData
+{
+	PointLightData PoiLight;
 };
 
 PointLightComponent::PointLightComponent(float constant, float linear, float quadratic)
@@ -54,7 +64,7 @@ void PointLightComponent::Initialize()
 	
 	std::cout << "!!!!!!!!!!!!!!!!" << std::endl;
 
-	constBuffer = new ID3D11Buffer * [3];
+	constBuffer = new ID3D11Buffer * [2];
 
 	D3D11_BUFFER_DESC firstConstBufferDesc = {};
 	firstConstBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -65,6 +75,16 @@ void PointLightComponent::Initialize()
 	firstConstBufferDesc.ByteWidth = sizeof(CameraData);
 	result = Game::GetInstance()->GetRenderSystem()->device->CreateBuffer(&firstConstBufferDesc, nullptr, &constBuffer[0]);
 	assert(SUCCEEDED(result));
+
+	D3D11_BUFFER_DESC secondConstBufferDesc = {};
+	secondConstBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	secondConstBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	secondConstBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	secondConstBufferDesc.MiscFlags = 0;
+	secondConstBufferDesc.StructureByteStride = 0;
+	secondConstBufferDesc.ByteWidth = sizeof(LightData);
+	result = Game::GetInstance()->GetRenderSystem()->device->CreateBuffer(&secondConstBufferDesc, nullptr, &constBuffer[1]);
+	assert(SUCCEEDED(result));
 }
 
 void PointLightComponent::Draw()
@@ -73,14 +93,24 @@ void PointLightComponent::Draw()
 	{
 		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetView(),
 		Game::GetInstance()->currentCamera->GetProjection(),
-		Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetModel(),
 		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition(),
-		gameObject->transformComponent->GetPosition()
 	};
 	D3D11_MAPPED_SUBRESOURCE firstMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[0], 0, D3D11_MAP_WRITE_DISCARD, 0, &firstMappedResource);
 	memcpy(firstMappedResource.pData, &cameraData, sizeof(CameraData));
 	Game::GetInstance()->GetRenderSystem()->context->Unmap(constBuffer[0], 0);
+
+	LightData lightData
+	{
+		Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetModel(),
+		Game::GetInstance()->pointLights->at(0)->lightColor,
+		Vector4(1.0f, 0.09f, 0.032f, 1.0f),
+		Vector4(Game::GetInstance()->pointLights->at(0)->gameObject->transformComponent->GetPosition())
+	};
+	D3D11_MAPPED_SUBRESOURCE secondMappedResource;
+	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[1], 0, D3D11_MAP_WRITE_DISCARD, 0, &secondMappedResource);
+	memcpy(secondMappedResource.pData, &lightData, sizeof(LightData));
+	Game::GetInstance()->GetRenderSystem()->context->Unmap(constBuffer[1], 0);
 
 	///
 
@@ -96,8 +126,8 @@ void PointLightComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); //-//
 	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingGreater, 0); //-//
 
-	UINT strides[]{ 16 };
-	UINT offsets[]{ 0 };
+	UINT strides[] { 16 };
+	UINT offsets[] { 0 };
 	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, poiVertexBuffer.GetAddressOf(), strides, offsets); //-//
 	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(Game::GetInstance()->GetRenderSystem()->layoutLightingPoi); //-//
 	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(poiIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0); //-//
@@ -106,8 +136,8 @@ void PointLightComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(Game::GetInstance()->GetRenderSystem()->psLightingPoi, nullptr, 0); //-//
 	//Game::GetInstance()->GetRenderSystem()->context->GSSetShader(nullptr, nullptr, 0);
 
-	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 1, constBuffer); //-//
-	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 1, constBuffer); //-//
+	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffer); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffer); //-//
 
 	Game::GetInstance()->GetRenderSystem()->context->DrawIndexed(poiIndices.size(), 0, 0); //-//
 }

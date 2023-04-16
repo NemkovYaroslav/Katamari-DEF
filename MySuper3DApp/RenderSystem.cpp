@@ -92,13 +92,13 @@ RenderSystem::RenderSystem()
 
 	D3D11_DEPTH_STENCIL_DESC dsDescLess = {};    ///
 	dsDescLess.DepthEnable = TRUE;
-	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	dsDescLess.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	result = device->CreateDepthStencilState(&dsDescLess, &dsLightingLess);
 
 	D3D11_DEPTH_STENCIL_DESC dsDescGreater = {}; ///
 	dsDescLess.DepthEnable = TRUE;
-	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	dsDescLess.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
 	result = device->CreateDepthStencilState(&dsDescLess, &dsLightingGreater);
 
@@ -511,13 +511,10 @@ void RenderSystem::PrepareFrame()
 void RenderSystem::Draw()
 {
 	context->ClearState();
-
 	context->RSSetViewports(1, viewport.get()); //-//
-
 	context->ClearRenderTargetView(gBuffer->diffuseRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
 	context->ClearRenderTargetView(gBuffer->normalRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
 	context->ClearRenderTargetView(gBuffer->worldPositionRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
-
 	ID3D11RenderTargetView* views[] = {
 		gBuffer->diffuseRTV,
 		gBuffer->normalRTV,
@@ -525,7 +522,6 @@ void RenderSystem::Draw()
 		nullptr, nullptr, nullptr, nullptr, nullptr
 	};
 	context->OMSetRenderTargets(8, views, depthView.Get());
-
 	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	for (auto& renderComponent : renderComponents)

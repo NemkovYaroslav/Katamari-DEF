@@ -53,8 +53,8 @@ PSOutput PSMain(PS_IN input)
     PSOutput ret = (PSOutput) 0;
     
     ret.Diffuse.rgb = DiffuseMap.Sample(Sampler, input.tex).rgb;
-    ret.WorldPos    = input.modelPos;
     ret.Diffuse.a   = float3(1, 1, 1);
+    ret.WorldPos    = input.modelPos;
     
     float3 normal         = input.normal;
     float3 unpackedNormal = normalize(normal * 2.0f - 1.0f);

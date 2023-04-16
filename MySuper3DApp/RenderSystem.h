@@ -24,13 +24,13 @@ public:
 	void InitializeLightingShader(std::string shaderFileName);
 	void InitializeLightingShaderPoi(std::string shaderFileName);
 
-	std::shared_ptr<D3D11_VIEWPORT> viewport;
-	Microsoft::WRL::ComPtr<ID3D11Device> device;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
-	Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
+	std::shared_ptr<D3D11_VIEWPORT>                viewport;
+	Microsoft::WRL::ComPtr<ID3D11Device>           device;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext>    context;
+	Microsoft::WRL::ComPtr<IDXGISwapChain>         swapChain;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>        backBuffer;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderView;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> depthBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>        depthBuffer;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthView;
 
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>     inputLayout;

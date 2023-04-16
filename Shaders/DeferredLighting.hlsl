@@ -118,7 +118,7 @@ float3 CalcDirLight(DirectionalLightData dirLight, float3 normal, float3 viewDir
     float3 diffuse  = float3(0.5f, 0.5f, 0.5f) * diff * diffValue;
     float3 specular = float3(0.5f, 0.5f, 0.5f) * spec * diffValue;
     
-    float1 isLighted = 1;
+    float isLighted = 1;
     
     isLighted = IsLighted(lightDir, normal, posViewProj, layer);
     

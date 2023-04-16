@@ -164,10 +164,10 @@ void DirectionalLightComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->PSSetSamplers(0, 1, Game::GetInstance()->GetRenderShadowsSystem()->sSamplerState.GetAddressOf());      //-//
 
 	//DIRECTIONAL OR AMBIENT*
-	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullBack); //-//
+	//Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullBack); //-//
 	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);     //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingLess, 0); //-//
+	//Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingLess, 0); //-//
 
 	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(nullptr); //-//
 	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0); //-//

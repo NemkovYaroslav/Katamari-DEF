@@ -182,6 +182,7 @@ void RenderComponent::DrawOpaque()
 	Game::GetInstance()->GetRenderSystem()->context->Unmap(constBuffer[0], 0);
 
 	Game::GetInstance()->GetRenderSystem()->context->OMSetBlendState(Game::GetInstance()->GetRenderSystem()->blendStateOpaque, nullptr, 0xffffffff); //-//
+
 	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsOpaque, 0); //-//
 
 	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 1, modelComponent->textureView.GetAddressOf()); 
