@@ -102,6 +102,12 @@ RenderSystem::RenderSystem()
 	dsDescLess.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
 	result = device->CreateDepthStencilState(&dsDescLess, &dsLightingGreater);
 
+	D3D11_DEPTH_STENCIL_DESC dsDirLightDesc = {};
+	dsDescLess.DepthEnable = FALSE;
+	dsDescLess.StencilEnable = FALSE;
+	dsDescLess.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	result = device->CreateDepthStencilState(&dsDirLightDesc, &dsDirLight);
+
 	viewport = std::make_shared<D3D11_VIEWPORT>();
 	viewport->TopLeftX = 0;
 	viewport->TopLeftY = 0;
@@ -512,8 +518,8 @@ void RenderSystem::Draw()
 {
 	context->ClearState();
 	context->RSSetViewports(1, viewport.get()); //-//
-	context->ClearRenderTargetView(gBuffer->diffuseRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
-	context->ClearRenderTargetView(gBuffer->normalRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
+	context->ClearRenderTargetView(gBuffer->diffuseRTV,       Color(0.0f, 0.0f, 0.0f, 1.0f));
+	context->ClearRenderTargetView(gBuffer->normalRTV,        Color(0.0f, 0.0f, 0.0f, 1.0f));
 	context->ClearRenderTargetView(gBuffer->worldPositionRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
 	ID3D11RenderTargetView* views[] = {
 		gBuffer->diffuseRTV,
@@ -534,7 +540,6 @@ void RenderSystem::Draw()
 	context->RSSetViewports(1, viewport.get()); //-//
 	float backgroundColor[] = { 0.2f, 0.2f, 0.2f };
 	context->ClearRenderTargetView(renderView.Get(), backgroundColor);
-	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	Game::GetInstance()->directionalLight->Draw();
 

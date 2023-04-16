@@ -38,7 +38,7 @@ void KatamariDamacyGame::Initialize()
 
 	GameObject* directionalLight = new GameObject();
 	DirectionalLightComponent* directionalLightComponent = new DirectionalLightComponent(1024, 40.0f, 40.0f, 0.1f, 200.0f);
-	directionalLightComponent->direction = Vector4(Vector3(0.0f, -1.0f, 0.3f));
+	directionalLightComponent->direction = Vector4(Vector3(0.0f, -1.0f, 0.1f));
 	directionalLight->AddComponent(directionalLightComponent);
 	Game::GetInstance()->directionalLight = directionalLightComponent;
 
@@ -50,7 +50,7 @@ void KatamariDamacyGame::Initialize()
 	pointLight0->modelComponent->material.specular = { 1.0f, 1.0f, 1.0f };
 	PointLightComponent* pointLightComponent0 = new PointLightComponent(1.0f, 0.09f, 0.032f);
 	pointLightComponent0->lightColor = { 1.0f, 0.0f, 0.0f };
-	pointLightComponent0->PoiAddMesh(3.0f, "../Models/LightSphere.fbx");
+	pointLightComponent0->PoiAddMesh(3.0f, "../Models/lightSphere.fbx");
 	GameObject* pointLightSphere0 = new GameObject();
 	pointLightSphere0->transformComponent->SetPosition(Vector3(15, 1, 15));
 	pointLightSphere0->AddComponent(pointLightComponent0);

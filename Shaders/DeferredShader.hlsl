@@ -34,7 +34,8 @@ PS_IN VSMain(VS_IN input)
     float4 modelPos = mul(float4(input.pos, 1.0f), curCamera.objModel);
     output.pos      = mul(mul(modelPos, curCamera.view), curCamera.projection);
     output.modelPos = modelPos;
-    output.normal   = mul(transpose(curCamera.objModel), input.normal);
+    //output.normal   = mul(transpose(curCamera.objModel), input.normal);
+    output.normal   = mul(input.normal, curCamera.objModel);
     output.tex      = input.tex;
     
     return output;
@@ -56,9 +57,11 @@ PSOutput PSMain(PS_IN input)
     ret.Diffuse.a   = float3(1, 1, 1);
     ret.WorldPos    = input.modelPos;
     
-    float3 normal         = input.normal;
-    float3 unpackedNormal = normalize(normal * 2.0f - 1.0f);
-    ret.Normal            = float4(unpackedNormal, 0);
+    //float3 normal         = input.normal;
+    //float3 unpackedNormal = normalize(normal * 2.0f - 1.0f);
+    //ret.Normal            = float4(unpackedNormal, 0);
+    
+    ret.Normal = input.normal;
     
     return ret;
 }

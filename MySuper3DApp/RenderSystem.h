@@ -46,6 +46,8 @@ public:
 	ID3D11DepthStencilState* dsLightingLess;    ///
 	ID3D11DepthStencilState* dsLightingGreater; ///
 
+	ID3D11DepthStencilState* dsDirLight; ///
+
 	ID3D11RasterizerState* rastCullBack;  ///
 	ID3D11RasterizerState* rastCullFront; ///
 

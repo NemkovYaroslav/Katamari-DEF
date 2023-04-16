@@ -17,9 +17,9 @@ RenderComponent::RenderComponent(ModelComponent* modelComponent)
 
 struct alignas(16) CameraData
 {
-	Matrix  camView;
-	Matrix  camProjection;
-	Matrix  objModel;
+	Matrix camView;
+	Matrix camProjection;
+	Matrix objModel;
 };
 
 struct MaterialData

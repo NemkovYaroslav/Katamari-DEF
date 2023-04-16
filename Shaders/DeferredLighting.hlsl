@@ -114,7 +114,7 @@ float3 CalcDirLight(DirectionalLightData dirLight, float3 normal, float3 viewDir
     float3 reflectDir = reflect(-lightDir, normal);
     float  spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
     
-    float3 ambient  = float3(0.5f, 0.5f, 0.5f)        * diffValue;
+    float3 ambient  = float3(0.2f, 0.2f, 0.2f)        * diffValue;
     float3 diffuse  = float3(0.5f, 0.5f, 0.5f) * diff * diffValue;
     float3 specular = float3(0.5f, 0.5f, 0.5f) * spec * diffValue;
     

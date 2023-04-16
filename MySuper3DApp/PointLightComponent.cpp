@@ -122,8 +122,8 @@ void PointLightComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 3, resources);
 
 	//POINT
-	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullFront); //-//
-	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); //-//
+	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullBack);                     //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);                          //-//
 	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingGreater, 0); //-//
 
 	UINT strides[] { 16 };
