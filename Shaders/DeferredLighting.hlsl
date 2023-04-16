@@ -8,7 +8,6 @@ cbuffer CameraConstantBuffer : register(b0)
     CurrentCameraData curCamera;
 };
 
-
 struct DirectionalLightData
 {
     float3 lightColor;
@@ -22,7 +21,7 @@ cbuffer LightConstantBuffer : register(b1)
 struct ShadowData
 {
     row_major matrix viewProj[4];
-    float4 distances;
+    float4           distances;
 };
 cbuffer LightCameraConstantBuffer : register(b2)
 {
@@ -44,16 +43,16 @@ PS_IN VSMain(uint id : SV_VertexID)
     PS_IN output = (PS_IN) 0;
     
     float2 inds = float2(id & 1, (id & 2) >> 1);
-    output.pos = float4(inds * float2(2, -2) + float2(-1, 1), 0, 1);
+    output.pos  = float4(inds * float2(2, -2) + float2(-1, 1), 0, 1);
     
     return output;
 }
 
 Texture2D DiffuseMap  : register(t0);
-Texture2D NormalMap   : register(t1); ///
-Texture2D WorldPosMap : register(t2); ///
+Texture2D NormalMap   : register(t1);
+Texture2D WorldPosMap : register(t2);
 
-Texture2DArray ShadowMap : register(t3);
+Texture2DArray ShadowMap                : register(t3);
 SamplerComparisonState ShadowMapSampler : register(s0);
 
 struct GBufferData
@@ -68,8 +67,8 @@ GBufferData ReadGBuffer(float2 screenPos)
     GBufferData buf = (GBufferData) 0;
     
     buf.DiffuseSpec = DiffuseMap.Load(float3(screenPos, 0));
-    buf.WorldPos = WorldPosMap.Load(float3(screenPos, 0)).xyz;
-    buf.Normal = NormalMap.Load(float3(screenPos, 0)).xyz;
+    buf.WorldPos    = WorldPosMap.Load(float3(screenPos, 0)).xyz;
+    buf.Normal      = NormalMap.Load(float3(screenPos, 0)).xyz;
     
     return buf;
 }
@@ -80,12 +79,12 @@ float4 PSMain(PS_IN input) : SV_Target
 {
     GBufferData gBuffer = ReadGBuffer(input.pos.xy);
 
-    float3 normal = normalize(gBuffer.Normal);
+    float3 normal  = normalize(gBuffer.Normal);
     float3 viewDir = normalize(curCamera.position - gBuffer.WorldPos.xyz);
     
     float4 cameraViewPosition = mul(float4(gBuffer.WorldPos.xyz, 1.0f), curCamera.view);
     
-    float layer = 3.0f;
+    float layer    = 3.0f;
     float depthVal = abs(cameraViewPosition.z);
     for (int i = 0; i < 4; ++i)
     {

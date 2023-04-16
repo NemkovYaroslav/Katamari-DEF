@@ -52,6 +52,7 @@ void KatamariDamacyGame::Initialize()
 	pointLightComponent0->lightColor = { 1.0f, 0.0f, 0.0f };
 	pointLightComponent0->PoiAddMesh(3.0f, "../Models/LightSphere.fbx");
 	GameObject* pointLightSphere0 = new GameObject();
+	pointLightSphere0->transformComponent->SetPosition(Vector3(15, 1, 15));
 	pointLightSphere0->AddComponent(pointLightComponent0);
 	Game::GetInstance()->pointLights->push_back(pointLightComponent0);
 

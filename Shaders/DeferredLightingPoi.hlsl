@@ -51,13 +51,6 @@ GBufferData ReadGBuffer(float2 screenPos)
 }
 
 float4 PSMain(PS_IN input) : SV_Target
-{
-    GBufferData gBuffer = ReadGBuffer(input.pos.xy);
-    
-    float3 diffValue = gBuffer.DiffuseSpec;
-    
-    float distance = length(curCamera.spherePosition - gBuffer.WorldPos.xyz);
-    float attenuation = 1.0f / (1.0f + 0.09f * distance + 0.032 * (distance * distance));
-    
+{    
     return float4(float3(1.0f, 0.0f, 0.0f), 1.0f);
 }

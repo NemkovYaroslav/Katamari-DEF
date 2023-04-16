@@ -66,22 +66,22 @@ RenderSystem::RenderSystem()
 
 	D3D11_BLEND_DESC BlendStateOpaqueDesc; /// 
 	ZeroMemory(&BlendStateOpaqueDesc, sizeof(D3D11_BLEND_DESC));
-	BlendStateOpaqueDesc.RenderTarget[0].BlendEnable = FALSE;
+	BlendStateOpaqueDesc.RenderTarget[0].BlendEnable           = FALSE;
 	BlendStateOpaqueDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	BlendStateOpaqueDesc.IndependentBlendEnable = false;
+	BlendStateOpaqueDesc.IndependentBlendEnable                = false;
 	device->CreateBlendState(&BlendStateOpaqueDesc, &blendStateOpaque);
 
 	D3D11_BLEND_DESC BlendStateLightDesc; ///
 	ZeroMemory(&BlendStateLightDesc, sizeof(D3D11_BLEND_DESC));
-	BlendStateLightDesc.RenderTarget[0].BlendEnable = TRUE;
+	BlendStateLightDesc.RenderTarget[0].BlendEnable           = TRUE;
 	BlendStateLightDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	BlendStateLightDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	BlendStateLightDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-	BlendStateLightDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-	BlendStateLightDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	BlendStateLightDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	BlendStateLightDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	BlendStateLightDesc.IndependentBlendEnable = false;
+	BlendStateLightDesc.RenderTarget[0].SrcBlend              = D3D11_BLEND_ONE;
+	BlendStateLightDesc.RenderTarget[0].SrcBlendAlpha         = D3D11_BLEND_ZERO;
+	BlendStateLightDesc.RenderTarget[0].DestBlend             = D3D11_BLEND_ONE;
+	BlendStateLightDesc.RenderTarget[0].DestBlendAlpha        = D3D11_BLEND_ONE;
+	BlendStateLightDesc.RenderTarget[0].BlendOp               = D3D11_BLEND_OP_ADD;
+	BlendStateLightDesc.RenderTarget[0].BlendOpAlpha          = D3D11_BLEND_OP_ADD;
+	BlendStateLightDesc.IndependentBlendEnable                = false;
 	device->CreateBlendState(&BlendStateLightDesc, &blendStateLight);
 
 	D3D11_DEPTH_STENCIL_DESC dsDesc = {};        ///
@@ -512,6 +512,12 @@ void RenderSystem::Draw()
 {
 	context->ClearState();
 
+	context->RSSetViewports(1, viewport.get()); //-//
+
+	context->ClearRenderTargetView(gBuffer->diffuseRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
+	context->ClearRenderTargetView(gBuffer->normalRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
+	context->ClearRenderTargetView(gBuffer->worldPositionRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
+
 	ID3D11RenderTargetView* views[] = {
 		gBuffer->diffuseRTV,
 		gBuffer->normalRTV,
@@ -519,12 +525,6 @@ void RenderSystem::Draw()
 		nullptr, nullptr, nullptr, nullptr, nullptr
 	};
 	context->OMSetRenderTargets(8, views, depthView.Get());
-
-	context->RSSetViewports(1, viewport.get());
-
-	context->ClearRenderTargetView(gBuffer->diffuseRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
-	context->ClearRenderTargetView(gBuffer->normalRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
-	context->ClearRenderTargetView(gBuffer->worldPositionRTV, Color(0.0f, 0.0f, 0.0f, 1.0f));
 
 	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -535,7 +535,7 @@ void RenderSystem::Draw()
 
 	context->ClearState();
 	context->OMSetRenderTargets(1, renderView.GetAddressOf(), depthView.Get());
-	context->RSSetViewports(1, viewport.get());
+	context->RSSetViewports(1, viewport.get()); //-//
 	float backgroundColor[] = { 0.2f, 0.2f, 0.2f };
 	context->ClearRenderTargetView(renderView.Get(), backgroundColor);
 	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

@@ -152,34 +152,34 @@ void DirectionalLightComponent::Draw()
 
 	///
 
-	Game::GetInstance()->GetRenderSystem()->context->OMSetBlendState(Game::GetInstance()->GetRenderSystem()->blendStateLight, nullptr, 0xffffffff); ///
+	Game::GetInstance()->GetRenderSystem()->context->OMSetBlendState(Game::GetInstance()->GetRenderSystem()->blendStateLight, nullptr, 0xffffffff); //-//
 
 	ID3D11ShaderResourceView* resources[] = {
 		Game::GetInstance()->GetRenderSystem()->gBuffer->diffuseSRV,
 		Game::GetInstance()->GetRenderSystem()->gBuffer->normalSRV,
 		Game::GetInstance()->GetRenderSystem()->gBuffer->worldPositionSRV
 	};
-	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 3, resources);
-	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(3, 1, Game::GetInstance()->directionalLight->textureResourceView.GetAddressOf());
-	Game::GetInstance()->GetRenderSystem()->context->PSSetSamplers(0, 1, Game::GetInstance()->GetRenderShadowsSystem()->sSamplerState.GetAddressOf());
+	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 3, resources); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(3, 1, Game::GetInstance()->directionalLight->textureResourceView.GetAddressOf()); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetSamplers(0, 1, Game::GetInstance()->GetRenderShadowsSystem()->sSamplerState.GetAddressOf());      //-//
 
-	//DIRECTIONAL
-	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullBack);
-	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	//DIRECTIONAL OR AMBIENT*
+	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullBack); //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);     //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingLess, 0);
+	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsLightingLess, 0); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(nullptr);
-	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0);
+	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(nullptr); //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(Game::GetInstance()->GetRenderSystem()->vsLighting, nullptr, 0);
-	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(Game::GetInstance()->GetRenderSystem()->psLighting, nullptr, 0);
-	Game::GetInstance()->GetRenderSystem()->context->GSSetShader(nullptr, nullptr, 0);
+	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(Game::GetInstance()->GetRenderSystem()->vsLighting, nullptr, 0); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(Game::GetInstance()->GetRenderSystem()->psLighting, nullptr, 0); //-//
+	//Game::GetInstance()->GetRenderSystem()->context->GSSetShader(nullptr, nullptr, 0);
 
-	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 3, constBuffer);
-	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 3, constBuffer);
+	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 3, constBuffer); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 3, constBuffer); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->Draw(4, 0);
+	Game::GetInstance()->GetRenderSystem()->context->Draw(4, 0); //-//
 }
 
 Matrix DirectionalLightComponent::GetViewMatrix()

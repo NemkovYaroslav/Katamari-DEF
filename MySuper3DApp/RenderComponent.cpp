@@ -20,7 +20,6 @@ struct alignas(16) CameraData
 	Matrix  camView;
 	Matrix  camProjection;
 	Matrix  objModel;
-	Vector3 camPosition;
 };
 
 struct MaterialData
@@ -175,35 +174,34 @@ void RenderComponent::DrawOpaque()
 	{
 		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetView(),
 		Game::GetInstance()->currentCamera->GetProjection(),
-		gameObject->transformComponent->GetModel(),
-		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition()
+		gameObject->transformComponent->GetModel()
 	};
 	D3D11_MAPPED_SUBRESOURCE firstMappedResource;
 	Game::GetInstance()->GetRenderSystem()->context->Map(constBuffer[0], 0, D3D11_MAP_WRITE_DISCARD, 0, &firstMappedResource);
 	memcpy(firstMappedResource.pData, &cameraData, sizeof(CameraData));
 	Game::GetInstance()->GetRenderSystem()->context->Unmap(constBuffer[0], 0);
 
-	Game::GetInstance()->GetRenderSystem()->context->OMSetBlendState(Game::GetInstance()->GetRenderSystem()->blendStateOpaque, nullptr, 0xffffffff); ///
-	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsOpaque, 0);                    ///
+	Game::GetInstance()->GetRenderSystem()->context->OMSetBlendState(Game::GetInstance()->GetRenderSystem()->blendStateOpaque, nullptr, 0xffffffff); //-//
+	Game::GetInstance()->GetRenderSystem()->context->OMSetDepthStencilState(Game::GetInstance()->GetRenderSystem()->dsOpaque, 0); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 1, modelComponent->textureView.GetAddressOf());
-	Game::GetInstance()->GetRenderSystem()->context->PSSetSamplers(0, 1, Game::GetInstance()->GetRenderSystem()->samplerState.GetAddressOf());
+	Game::GetInstance()->GetRenderSystem()->context->PSSetShaderResources(0, 1, modelComponent->textureView.GetAddressOf()); 
+	Game::GetInstance()->GetRenderSystem()->context->PSSetSamplers(0, 1, Game::GetInstance()->GetRenderSystem()->samplerState.GetAddressOf()); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullFront); ///
-	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Game::GetInstance()->GetRenderSystem()->context->RSSetState(Game::GetInstance()->GetRenderSystem()->rastCullFront); //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); //-//
 
-	UINT strides[]{ 48 };
-	UINT offsets[]{ 0 };
-	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, modelComponent->vertexBuffer.GetAddressOf(), strides, offsets);
-	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(Game::GetInstance()->GetRenderSystem()->layoutOpaque); ///
-	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(modelComponent->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	UINT strides[]{ 48 }; //-//
+	UINT offsets[]{ 0 };  //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, modelComponent->vertexBuffer.GetAddressOf(), strides, offsets); //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(Game::GetInstance()->GetRenderSystem()->layoutOpaque); //-//
+	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(modelComponent->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(Game::GetInstance()->GetRenderSystem()->vsOpaque, nullptr, 0);
-	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(Game::GetInstance()->GetRenderSystem()->psOpaque, nullptr, 0);
-	Game::GetInstance()->GetRenderSystem()->context->GSSetShader(nullptr, nullptr, 0);
+	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(Game::GetInstance()->GetRenderSystem()->vsOpaque, nullptr, 0); //-//
+	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(Game::GetInstance()->GetRenderSystem()->psOpaque, nullptr, 0); //-//
+	//Game::GetInstance()->GetRenderSystem()->context->GSSetShader(nullptr, nullptr, 0);
 
-	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 1, &constBuffer[0]);
-	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 1, &constBuffer[0]);
+	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 1, &constBuffer[0]); //-//
+	//Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 1, &constBuffer[0]); //-//
 
-	Game::GetInstance()->GetRenderSystem()->context->DrawIndexed(modelComponent->indices.size(), 0, 0);
+	Game::GetInstance()->GetRenderSystem()->context->DrawIndexed(modelComponent->indices.size(), 0, 0); //-//
 }
