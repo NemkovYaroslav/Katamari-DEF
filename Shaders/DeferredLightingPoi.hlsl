@@ -64,7 +64,7 @@ float4 PSMain(PS_IN input) : SV_Target
 {   
     GBufferData gBuffer = ReadGBuffer(input.pos.xy);
 
-    /*
+    ///*
     float3 diffValue = gBuffer.DiffuseSpec.rgb;
     float3 normal    = gBuffer.Normal;
     float3 viewDir   = normalize(curCamera.position - gBuffer.WorldPos);
@@ -77,14 +77,15 @@ float4 PSMain(PS_IN input) : SV_Target
     float  distance    = length(poiLight.position - gBuffer.WorldPos);
     if (distance > 3.0f)
     {
-        clip(gBuffer.WorldPos);
+        discard;
     }
-    float  attenuation = 1.0f / (poiLight.constLinearQuadCount.x + poiLight.constLinearQuadCount.y * distance + poiLight.constLinearQuadCount.z * (distance * distance));
-    float3 diffuse     = attenuation * poiLight.lightColor * diffValue * diff;
-    float3 specular    = attenuation * poiLight.lightColor * diffValue * spec;
+    float  attenuation = max(1.0f - distance / 3.0f, 0.0f);
+    attenuation *= attenuation;
+    float3 diffuse  = attenuation * poiLight.lightColor * diffValue * diff * 3.0f;
+    float3 specular = attenuation * poiLight.lightColor * diffValue * spec * 3.0f;
     
     return float4(float3(diffuse + specular), 0.0f);
-    */
+    //*/
 
-    return float4(poiLight.lightColor, 0.0f);
+    //return float4(poiLight.lightColor, 0.0f);
 }
